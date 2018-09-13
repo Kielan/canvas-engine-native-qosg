@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Animated, findNodeHandle, TouchableWithoutFeedback, View, StyleSheet, Platform, NativeModules} from 'react-native'
 import {GCanvasView} from 'react-native-gcanvas'
-import {enable, GImage, ReactNativeBridge} from 'gcanvas.js/src/index.js'
+import {enable, Image as GImage, ReactNativeBridge} from 'gcanvas.js/src/index.js'
 import GestureRecognizer, {swipeDirections} from '../components/GestureView'
 import {Arena} from '../RTK/rtk'
 const AnimatedGestureRecognizer = Animated.createAnimatedComponent(GestureRecognizer)
@@ -13,7 +13,7 @@ export class Game extends Component {
     display = null
   }
   componentDidMount() {
-  //  ReactNativeBridge.GCanvasModule = NativeModules.GCanvasModule;
+    ReactNativeBridge.GCanvasModule = NativeModules.GCanvasModule;
     ReactNativeBridge.Platform = Platform;
     var ref = this.refs.canvas_holder
     var canvas_tag = findNodeHandle(ref)
