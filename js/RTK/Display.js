@@ -4,9 +4,8 @@ import {GCanvasView} from 'react-native-gcanvas'
 import {enable, Image as GImage, ReactNativeBridge} from 'gcanvas.js/src/index.js'
 
 //display is the screenview coordinates of the, "camera" on the map
-export class Display extends RTK {
+export class Display {
  constructor(options, refName) {
-   super(options, refName)
 
    ReactNativeBridge.GCanvasModule = NativeModules.GCanvasModule
    ReactNativeBridge.Platform = Platform

@@ -4,7 +4,7 @@ import {GCanvasView} from 'react-native-gcanvas'
 import { TweenMax } from 'gsap'
 import {enable, Image as GImage, ReactNativeBridge} from 'gcanvas.js/src/index.js'
 import GestureRecognizer, {swipeDirections} from '../components/GestureView'
-import { RTK, Arena, Display, Color } from '../RTK/rtk'
+import { RTK } from '../RTK/rtk'
 const AnimatedGestureRecognizer = Animated.createAnimatedComponent(GestureRecognizer)
 import State from '../state'
 var displayLevelOptions = {
@@ -62,17 +62,17 @@ export class Game extends Component {
   }
   init() {
     console.log('init step 1')
-    this.display = new Display(displayLevelOptions, this.refs.canvas_holder_ref)
+    this.display = new RTK.Display(displayLevelOptions, this.refs.canvas_holder_ref)
     console.log('init step 2')
     var container = this.display.getContainer()
     var foreground, background, colors;
     for (var i = 0; i < 15; i++) {
       // Calculate the foreground color, getting progressively darker
       // and the background color, getting progressively lighter.
-      foreground = new Color.toRGB([255 - (i*20),
+      foreground = new RTK.Color.toRGB([255 - (i*20),
                                     255 - (i*20),
                                     255 - (i*20)]);
-      background = new Color.toRGB([i*20, i*20, i*20]);
+      background = new RTK.Color.toRGB([i*20, i*20, i*20]);
       // Create the color format specifier.
       colors = "%c{" + foreground + "}%b{" + background + "}";
       // Draw the text two columns in and at the row specified
@@ -81,15 +81,15 @@ export class Game extends Component {
     }
   }
   _generateMap() {
-    var digger = new ROT.Map.Digger()
+    var digger = new RTK.Map.Arena()
 
-    var digCallback = function(x, y, value) {
-        if (value) { return; } /* do not store walls */
+//    var digCallback = function(x, y, value) {
+//        if (value) { return; } /* do not store walls */
 
-        var key = x+","+y
-        this.map[key] = "."
-    }
-    digger.create(digCallback.bind(this))
+//        var key = x+","+y
+//        this.map[key] = "."
+//    }
+//    digger.create(digCallback.bind(this))
   }
   moveWithDirection = direction => {
     if (this.gameState != State.Game.playing) {
@@ -121,8 +121,8 @@ export class Game extends Component {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80
     }
-    var generatedMap = new Arena(3, 3)
-    console.log('game rendergame = () =>', generatedMap)
+    console.log('game rendergame = () => RTK.Map', RTK.Map)
+    var generatedMap = new RTK.Map.Arena(3, 3)
     return (
       <AnimatedGestureRecognizer
         onResponderGrant={_ => {

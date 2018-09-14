@@ -1,6 +1,29 @@
 'use strict'
+/**
+ * Left pad
+ * @param {string} [character="0"]
+ * @param {int} [count=2]
+ */
+String.prototype.lpad = String.prototype.lpad || function(character, count) {
+	var ch = character || "0";
+	var cnt = count || 2;
+
+	var s = "";
+	while (s.length < (cnt - this.length)) { s += ch; }
+	s = s.substring(0, cnt-this.length);
+	return s+this;
+}
 
 export const Color = {
+	_clamp: function(num) {
+		if (num < 0) {
+			return 0
+		} else if (num > 255) {
+			return 255
+		} else {
+			return num
+		}
+	},
   fromString: function(str) {
     var cached, r;
     if (str in this._cache) {
@@ -28,7 +51,7 @@ export const Color = {
     }
 
     return cached.slice()
-  }
+  },
   add: function(color1, color2) {
     var result = color1.slice()
     for (var i=0;i<3;i++) {
@@ -37,7 +60,7 @@ export const Color = {
       }
     }
     return result
-  }
+  },
   multiply: function(color1, color2) {
     var result = color1.slice()
     for (var i=0;i<3;i++) {
@@ -47,7 +70,7 @@ export const Color = {
       result[i] = Math.round(result[i])
     }
     return result
-  }
+  },
   multiply_: function(color1, color2) {
     for (var i=0;i<3;i++) {
     for (var j=1;j<arguments.length;j++) {
@@ -56,7 +79,7 @@ export const Color = {
       color1[i] = Math.round(color1[i])
     }
     return color1
-  }
+  },
   interpolate: function(color1, color2, factor) {
     if (arguments.length < 3) { factor = 0.5 }
     var result = color1.slice()
@@ -64,24 +87,15 @@ export const Color = {
       result[i] = Math.round(result[i] + factor*(color2[i]-color1[i]))
     }
     return result
-  }
+  },
   toRGB: function(color) {
     return "rgb(" + this._clamp(color[0]) + "," + this._clamp(color[1]) + "," + this._clamp(color[2]) + ")"
-  }
+  },
   toHex: function(color) {
     var parts = []
     for (var i=0;i<3;i++) {
       parts.push(this._clamp(color[i]).toString(16).lpad("0", 2))
     }
     return "#" + parts.join("")
-  }
-  _clamp: function(num) {
-    if (num < 0) {
-      return 0
-    } else if (num > 255) {
-      return 255
-    } else {
-      return num
-    }
-  }
+  },
 }
