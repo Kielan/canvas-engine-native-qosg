@@ -77,7 +77,7 @@ export class Game extends Component {
       colors = "%c{" + foreground + "}%b{" + background + "}";
       // Draw the text two columns in and at the row specified
       // by i
-      display.drawText(2, i, colors + "Hello, world!");
+      this.display.drawText(2, i, colors + "Hello, world!");
     }
   }
   _generateMap() {

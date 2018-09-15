@@ -14,7 +14,7 @@ String.prototype.lpad = String.prototype.lpad || function(character, count) {
 	return s+this;
 }
 
-export const Color = {
+export var Color = {
 	_clamp: function(num) {
 		if (num < 0) {
 			return 0
@@ -89,7 +89,7 @@ export const Color = {
     return result
   },
   toRGB: function(color) {
-    return "rgb(" + this._clamp(color[0]) + "," + this._clamp(color[1]) + "," + this._clamp(color[2]) + ")"
+    return "rgb(" + Color._clamp(color[0]) + "," + Color._clamp(color[1]) + "," + Color._clamp(color[2]) + ")"
   },
   toHex: function(color) {
     var parts = []

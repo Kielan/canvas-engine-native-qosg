@@ -2,6 +2,7 @@
 import {findNodeHandle, Platform, NativeModules} from 'react-native'
 import {GCanvasView} from 'react-native-gcanvas'
 import {enable, Image as GImage, ReactNativeBridge} from 'gcanvas.js/src/index.js'
+import {RTK_ASCII} from './ASCII'
 
 //display is the screenview coordinates of the, "camera" on the map
 export class Display {
@@ -14,6 +15,8 @@ export class Display {
    var el = { ref:""+canvas_tag, style:{width:414, height:376}}
    ref = enable(el, {bridge: ReactNativeBridge})
    this._context = ref.getContext('2d')
+
+   this._options = {}
 
    this.defaultOptions = {
      width: 120,
@@ -35,6 +38,9 @@ export class Display {
      tileColorize: false,
      termColor: "xterm"
    }
+
+   this._options = { ...this.defaultOptions }
+
    this._tick = this._tick.bind(this)
    requestAnimationFrame(this._tick)
  }
