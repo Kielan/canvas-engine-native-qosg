@@ -3,60 +3,91 @@ import {findNodeHandle, Platform, NativeModules} from 'react-native'
 import {GCanvasView} from 'react-native-gcanvas'
 import {enable, Image as GImage, ReactNativeBridge} from 'gcanvas.js/src/index.js'
 import {RTK_ASCII} from './ASCII'
+import {RTK} from './rtk'
+
+String.prototype.capitalize = String.prototype.capitalize || function() {
+	return this.charAt(0).toUpperCase() + this.substring(1);
+}
 
 //display is the screenview coordinates of the, "camera" on the map
 export class Display {
- constructor(options, refName) {
+  constructor(options, refName) {
 
-   ReactNativeBridge.GCanvasModule = NativeModules.GCanvasModule
-   ReactNativeBridge.Platform = Platform
-   var ref = refName//this.refs.canvas_holder_ref
-   var canvas_tag = findNodeHandle(refName)
-   var el = { ref:""+canvas_tag, style:{width:414, height:376}}
-   ref = enable(el, {bridge: ReactNativeBridge})
-   this._context = ref.getContext('2d')
+    ReactNativeBridge.GCanvasModule = NativeModules.GCanvasModule
+    ReactNativeBridge.Platform = Platform
+    var ref = refName//this.refs.canvas_holder_ref
+    var canvas_tag = findNodeHandle(refName)
+    var el = { ref:""+canvas_tag, style:{width:414, height:376}}
+    ref = enable(el, {bridge: ReactNativeBridge})
+    this._context = ref.getContext('2d')
 
-   this._options = {}
+    this._backend = null
+    this._data = {}
+    this._options = {}
 
-   this.defaultOptions = {
-     width: 120,
-     height: 120,
-     transpose: false,
-     layout: "rect",
-     fontSize: 15,
-     spacing: 1,
-     border: 0,
-     forceSquareRatio: false,
-     fontFamily: "monospace",
-     fontStyle: "",
-     fg: "#ccc",
-     bg: "#000",
-     tileWidth: 32,
-     tileHeight: 32,
-     tileMap: {},
-     tileSet: null,
-     tileColorize: false,
-     termColor: "xterm"
-   }
+    this.defaultOptions = {
+      width: 120,
+      height: 120,
+      transpose: false,
+      layout: "rect",
+      fontSize: 15,
+      spacing: 1,
+      border: 0,
+      forceSquareRatio: false,
+      fontFamily: "monospace",
+      fontStyle: "",
+      fg: "#ccc",
+      bg: "#000",
+      tileWidth: 32,
+      tileHeight: 32,
+      tileMap: {},
+      tileSet: null,
+      tileColorize: false,
+      termColor: "xterm"
+    }
+    for (var p in options) { this.defaultOptions[p] = options[p] }
+ 	  this.setOptions(this.defaultOptions)
 
-   this._options = { ...this.defaultOptions }
+    this._tick = this._tick.bind(this)
+    requestAnimationFrame(this._tick)
+  }
+  getContainer = () => {
+    return this._context.canvas
+  }
+  _draw(key, clearBefore) {
+    var data = this._data[key]
+    if (data[4] != this._options.bg) { clearBefore = true }
 
-   this._tick = this._tick.bind(this)
-   requestAnimationFrame(this._tick)
- }
- getContainer = () => {
-    return this._context.canvas;
- }
- draw(x, y, ch, fg, bg) {
-   if (!fg) { fg = this._options.fg }
-   if (!bg) { bg = this._options.bg }
-   this._data[x+","+y] = [x, y, ch, fg, bg]
+    this._backend.draw(data, clearBefore)
+  }
+  setOptions(options) {
+    for (var p in options) { this._options[p] = options[p] }
+    if (options.width || options.height || options.fontSize || options.fontFamily || options.spacing || options.layout) {
+      if (options.layout) {
+        this._backend = new RTK.Display[options.layout.capitalize()](this._context)
+      }
 
-   if (this._dirty === true) { return } /* will already redraw everything */
-   if (!this._dirty) { this._dirty = {} } /* first! */
-   this._dirty[x+","+y] = true
- }
- drawText(x, y, text, maxWidth) {
+      var font = (this._options.fontStyle ? this._options.fontStyle + " " : "") + this._options.fontSize + "px " + this._options.fontFamily
+      this._context.font = font
+      this._backend.compute(this._options)
+      this._context.font = font
+      this._context.textAlign = "center"
+      this._context.textBaseline = "middle"
+      this._dirty = true
+    }
+    return this
+  }
+  draw(x, y, ch, fg, bg) {
+    if (!fg) { fg = this._options.fg }
+    if (!bg) { bg = this._options.bg }
+    this._data[x+","+y] = [x, y, ch, fg, bg]
+
+    if (this._dirty === true) { return } /* will already redraw everything */
+    if (!this._dirty) { this._dirty = {} } /* first! */
+    this._dirty[x+","+y] = true
+  }
+  drawText(x, y, text, maxWidth) {
+   console.log('drawText')
    var fg = null;
    var bg = null;
    var cx = x;
@@ -66,10 +97,14 @@ export class Display {
 
    var tokens = RTK_ASCII.tokenize(text, maxWidth)
 
+   console.log('drawText tokens', tokens.length)
+
    while (tokens.length) { /* interpret tokenized opcode stream */
      var token = tokens.shift()
+     console.log('while tokens', token)
      switch (token.type) {
-     case RTK_ASCII:
+     case RTK_ASCII.TYPE_TEXT:
+     console.log('while switch case 0', token)
      var isSpace = false, isPrevSpace = false, isFullWidth = false, isPrevFullWidth = false
      for (var i=0;i<token.value.length;i++) {
      var cc = token.value.charCodeAt(i)
