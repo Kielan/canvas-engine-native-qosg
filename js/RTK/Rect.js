@@ -3,10 +3,13 @@
 export class Rect {
   constructor(context) {
     this._context = context
-    this._spacingX = 0
-    this._spacingY = 0
+    this._spacingX = 1
+    this._spacingY = 1
     this._canvasCache = {}
     this._options = {}
+    this.draw = this.draw.bind(this)
+    this._drawNoCache = this._drawNoCache.bind(this)
+
   }
   compute = (options) => {
     this._canvasCache = {}
@@ -26,9 +29,11 @@ export class Rect {
     this._context.canvas.height = options.height * this._spacingY
   }
   draw(data, clearBefore) {
+    console.log('else draw???????????')
     if (this.constructor.cache) {
       this._drawWithCache(data, clearBefore);
     } else {
+      console.log('else draw nocache')
       this._drawNoCache(data, clearBefore);
     }
   }
@@ -68,25 +73,29 @@ export class Rect {
     this._context.drawImage(canvas, x*this._spacingX, y*this._spacingY);
   }
   _drawNoCache(data, clearBefore) {
-    var x = data[0];
-    var y = data[1];
-    var ch = data[2];
-    var fg = data[3];
-    var bg = data[4];
+    var x = data[0]
+    var y = data[1]
+    var ch = data[2]
+    var fg = data[3]
+    var bg = data[4]
+    console.log('drawnocache data[0]', ch)
 
     if (clearBefore) {
-      var b = this._options.border;
-      this._context.fillStyle = bg;
-      this._context.fillRect(x*this._spacingX + b, y*this._spacingY + b, this._spacingX - b, this._spacingY - b);
+      var b = this._options.border
+      this._context.fillStyle = bg
+      this._context.fillRect(x*this._spacingX + b, y*this._spacingY + b, this._spacingX - b, this._spacingY - b)
     }
 
-    if (!ch) { return; }
+    if (!ch) { return }
 
-    this._context.fillStyle = fg;
+    this._context.fillStyle = fg
 
-    var chars = [].concat(ch);
+    var chars = [].concat(ch)
+    console.log('drawnocache right before filltext', this._context)
+//    this._context.fillText("Hello World!@#$%^&*()_+-=",10,50)
     for (var i=0;i<chars.length;i++) {
-      this._context.fillText(chars[i], (x+0.5) * this._spacingX, Math.ceil((y+0.5) * this._spacingY));
+//      this._context.fillText(chars[i], (x+0.5) * this._spacingX, Math.ceil((y+0.5) * this._spacingY))
+//       this._context.fillText("Hello World!@#$%^&*()_+-=",10,50)
     }
   }
 }

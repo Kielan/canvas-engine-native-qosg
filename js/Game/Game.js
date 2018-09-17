@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Animated, findNodeHandle, TouchableWithoutFeedback, View, StyleSheet, Platform, NativeModules} from 'react-native'
+import {Animated, findNodeHandle, TouchableWithoutFeedback, TouchableHighlight, View, StyleSheet, Platform, NativeModules} from 'react-native'
 import {GCanvasView} from 'react-native-gcanvas'
 import { TweenMax } from 'gsap'
 import {enable, Image as GImage, ReactNativeBridge} from 'gcanvas.js/src/index.js'
@@ -27,6 +27,9 @@ var displayLevelOptions = {
   tileColorize: false,
   termColor: "xterm"
 }
+
+ReactNativeBridge.GCanvasModule = NativeModules.GCanvasModule
+ReactNativeBridge.Platform = Platform
 
 export class Game extends Component {
   constructor(props) {
@@ -58,42 +61,24 @@ export class Game extends Component {
 //      ctx.drawImage(image, 150, 0)
 //      ctx.drawImage(image, 150, 450)
 //    }
-    this.init()
+//    this.init()
+//    this._display = new RTK.Display({width: 80, height: 24}, this.refs.canvas_holder_ref)
   }
-  init() {
-    console.log('init step 1')
-    this.display = new RTK.Display(displayLevelOptions, this.refs.canvas_holder_ref)
-    console.log('init step 2')
-    var container = this.display.getContainer()
-    var foreground, background, colors;
-    for (var i = 0; i < 15; i++) {
-      // Calculate the foreground color, getting progressively darker
-      // and the background color, getting progressively lighter.
-      foreground = new RTK.Color.toRGB([255 - (i*20),
-                                    255 - (i*20),
-                                    255 - (i*20)]);
-      background = new RTK.Color.toRGB([i*20, i*20, i*20]);
-      // Create the color format specifier.
-      colors = "%c{" + foreground + "}%b{" + background + "}";
-      // Draw the text two columns in and at the row specified
-      // by i
-      this.display.drawText(2, i, colors + "Hello, world!");
-    }
-  }
-  _generateMap() {
-    var digger = new RTK.Map.Arena()
-
-//    var digCallback = function(x, y, value) {
-//        if (value) { return; } /* do not store walls */
-
-//        var key = x+","+y
-//        this.map[key] = "."
-//    }
-//    digger.create(digCallback.bind(this))
+  onPressHandle = () => {
+    var ref = this.refs.canvas_holder_ref
+//    var canvas_tag = findNodeHandle(ref)
+//    var el = { ref:""+canvas_tag, style:{width:414, height:376}}
+//    ref = enable(el, {bridge: ReactNativeBridge})
+  //  var ctx = ref.getContext('2d')
+    //rect
+//    ctx.fillStyle = 'green'
+//    ctx.fillRect(0, 0, 100, 100)
+  //  ctx.fill()
+    this.display = new RTK.Display({width: 80, height: 24}, this.refs.canvas_holder_ref)
   }
   moveWithDirection = direction => {
     if (this.gameState != State.Game.playing) {
-      return;
+      return
     }
 
     const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections
@@ -121,59 +106,69 @@ export class Game extends Component {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80
     }
-  //  console.log('game rendergame = () => RTK.Map', RTK.Map)
-    var generatedMap = new RTK.Map.Arena(3, 3)
+
     return (
-      <AnimatedGestureRecognizer
-        onResponderGrant={_ => {
-          this.beginMoveWithDirection()
-        }}
-        onSwipe={(direction, state) => this.onSwipe(direction, state)}
-        config={config}
-        style={{
-          flex: 1,
-        }}
-      >
-      <TouchableWithoutFeedback
-        onPressIn={_ => {
-          this.beginMoveWithDirection()
-        }}
-        style={{ flex: 1 }}
-        onPress={_ => {
-          this.onSwipe(swipeDirections.SWIPE_UP, {})
-        }}>
-        {<View
-          style={{ width: 100, height: 100 }}
-        >
+      <TouchableHighlight onPress={this.onPressHandle}>
         <GCanvasView ref='canvas_holder_ref' style={styles.gcanvas}>
         </GCanvasView>
-        </View>}
-      </TouchableWithoutFeedback>
-    </AnimatedGestureRecognizer>
+      </TouchableHighlight>
     )
+  //  console.log('game rendergame = () => RTK.Map', RTK.Map)
+  //  var generatedMap = new RTK.Map.Arena(3, 3)
+    //backgroundColor: 'yellow'
+//    return (
+//      <AnimatedGestureRecognizer
+//        onResponderGrant={_ => {
+//          this.beginMoveWithDirection()
+//        }}
+//        onSwipe={(direction, state) => this.onSwipe(direction, state)}
+//        config={config}
+      //   style={{
+      //     flex: 1,
+      //   }}
+      // >
+      // <TouchableWithoutFeedback
+      //   onPressIn={_ => {
+      //     this.beginMoveWithDirection()
+      //   }}
+    //     style={{ flex: 1 }}
+    //     onPress={_ => {
+    //       this.onSwipe(swipeDirections.SWIPE_UP, {})
+    //     }}>
+    //     {<View
+    //       style={{ width: 200, height: 200 }}
+    //     >
+    //     <GCanvasView ref='canvas_holder_ref' style={styles.gcanvas}>
+    //     </GCanvasView>
+    //     </View>}
+    //   </TouchableWithoutFeedback>
+    // </AnimatedGestureRecognizer>
+//    )
   }
   render() {
     let Game = {}
     Game.map = {}
-    Game._generateMap = function() {
-        var arenaMap = new Arena()
-        var mapCallback = function(x, y, value) {
-            if (value) { return } /* do not store walls */
-            var key = x+","+y
-            this.map[key] = "."
-        }
-        arenaMap.create(mapCallback.bind(this));
-    }
-    Game._drawWholeMap = function() {
-      for (var key in this.map) {
-          var parts = key.split(",")
-          var x = parseInt(parts[0])
-          var y = parseInt(parts[1])
-          this.display.draw(x, y, this.map[key])
-      }
-    }
+
+//    Game._generateMap = function() {
+//        var arenaMap = new Arena()
+//        var mapCallback = function(x, y, value) {
+//            if (value) { return } /* do not store walls */
+//            var key = x+","+y
+//            this.map[key] = "."
+//        }
+//        arenaMap.create(mapCallback.bind(this));
+//    }
+//    Game._drawWholeMap = function() {
+//      for (var key in this.map) {
+//          var parts = key.split(",")
+//          var x = parseInt(parts[0])
+//          var y = parseInt(parts[1])
+//          this.display.draw(x, y, this.map[key])
+//      }
+//    }
+    //backgroundColor: '#6dceea'
     return (
-      <View style={[{ flex: 1, backgroundColor: '#6dceea' }, this.props.style]}>
+      <View style={[{ flex: 1 }, this.props.style]}>
         {this.renderGame()}
       </View>
     )

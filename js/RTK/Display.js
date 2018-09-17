@@ -21,11 +21,12 @@ export class Display {
     var canvas_tag = findNodeHandle(refName)
     var el = { ref:""+canvas_tag, style:{width:414, height:376}}
     ref = enable(el, {bridge: ReactNativeBridge})
-		console.log('refName iso', refName.fillRect)
     this._context = ref.getContext('2d')
+		//doesn't exactly match web api currently just adding
+		//width and height manually
 		this._context.canvas = {width: ref.width, height: ref.height}
-		//{canvas: {width: ref.width, height: ref.height}}//.getContext('2d')
-		console.log('pengest canvas log', this._context)
+
+	//	this._context.fillText("Hello World!@#$%^&*()_+-=",10,50)
 
     this._backend = null
     this._data = {}
@@ -52,9 +53,12 @@ export class Display {
       termColor: "xterm"
     }
     for (var p in options) { this.defaultOptions[p] = options[p] }
- 	  this.setOptions(this.defaultOptions)
 
-    this._tick = this._tick.bind(this)
+		this.setOptions = this.setOptions.bind(this)
+		this._tick = this._tick.bind(this)
+
+		this.setOptions(this.defaultOptions)
+
     requestAnimationFrame(this._tick)
   }
   getContainer = () => {
@@ -64,18 +68,23 @@ export class Display {
     var data = this._data[key]
     if (data[4] != this._options.bg) { clearBefore = true }
 
+	//	console.log('_backend.draw', data, clearBefore)
     this._backend.draw(data, clearBefore)
   }
   setOptions(options) {
     for (var p in options) { this._options[p] = options[p] }
     if (options.width || options.height || options.fontSize || options.fontFamily || options.spacing || options.layout) {
       if (options.layout) {
-//        this._backend = new RTK.Display[options.layout.capitalize()](this._context)
+				console.log('prequel to the most fussy compute operation of all time')
         this._backend = new Rect(this._context)
       }
 
       var font = (this._options.fontStyle ? this._options.fontStyle + " " : "") + this._options.fontSize + "px " + this._options.fontFamily
       this._context.font = font
+
+			//fortest
+//			this._context.fillText("Hello World!@#$%^&*()_+-=",10,50)
+			console.log('the most fussy compute operation of all time')
       this._backend.compute(this._options)
       this._context.font = font
       this._context.textAlign = "center"
