@@ -3,6 +3,7 @@ import {findNodeHandle, Platform, NativeModules} from 'react-native'
 import {GCanvasView} from 'react-native-gcanvas'
 import {enable, Image as GImage, ReactNativeBridge} from 'gcanvas.js/src/index.js'
 import {RTK_ASCII} from './ASCII'
+import {Rect} from './Rect'
 import {RTK} from './rtk'
 
 String.prototype.capitalize = String.prototype.capitalize || function() {
@@ -16,10 +17,15 @@ export class Display {
     ReactNativeBridge.GCanvasModule = NativeModules.GCanvasModule
     ReactNativeBridge.Platform = Platform
     var ref = refName//this.refs.canvas_holder_ref
+
     var canvas_tag = findNodeHandle(refName)
     var el = { ref:""+canvas_tag, style:{width:414, height:376}}
     ref = enable(el, {bridge: ReactNativeBridge})
+		console.log('refName iso', refName.fillRect)
     this._context = ref.getContext('2d')
+		this._context.canvas = {width: ref.width, height: ref.height}
+		//{canvas: {width: ref.width, height: ref.height}}//.getContext('2d')
+		console.log('pengest canvas log', this._context)
 
     this._backend = null
     this._data = {}
@@ -64,7 +70,8 @@ export class Display {
     for (var p in options) { this._options[p] = options[p] }
     if (options.width || options.height || options.fontSize || options.fontFamily || options.spacing || options.layout) {
       if (options.layout) {
-        this._backend = new RTK.Display[options.layout.capitalize()](this._context)
+//        this._backend = new RTK.Display[options.layout.capitalize()](this._context)
+        this._backend = new Rect(this._context)
       }
 
       var font = (this._options.fontStyle ? this._options.fontStyle + " " : "") + this._options.fontSize + "px " + this._options.fontFamily
@@ -87,7 +94,7 @@ export class Display {
     this._dirty[x+","+y] = true
   }
   drawText(x, y, text, maxWidth) {
-   console.log('drawText')
+//   console.log('drawText')
    var fg = null;
    var bg = null;
    var cx = x;
@@ -97,14 +104,14 @@ export class Display {
 
    var tokens = RTK_ASCII.tokenize(text, maxWidth)
 
-   console.log('drawText tokens', tokens.length)
+  // console.log('drawText tokens', tokens.length)
 
    while (tokens.length) { /* interpret tokenized opcode stream */
      var token = tokens.shift()
-     console.log('while tokens', token)
+  //   console.log('while tokens', token)
      switch (token.type) {
      case RTK_ASCII.TYPE_TEXT:
-     console.log('while switch case 0', token)
+    // console.log('while switch case 0', token)
      var isSpace = false, isPrevSpace = false, isFullWidth = false, isPrevFullWidth = false
      for (var i=0;i<token.value.length;i++) {
      var cc = token.value.charCodeAt(i)
@@ -143,12 +150,12 @@ export class Display {
 
  return lines
  }
- _tick() {
+ _tick = () => {
    requestAnimationFrame(this._tick)
    if (!this._dirty) { return }
    if (this._dirty === true) { /* draw all */
      this._context.fillStyle = this._options.bg
-     this._context.fillRect(0, 0, this._context.options.width, this._context.options.height)
+     this._context.fillRect(0, 0, this._context.canvas.width, this._context.canvas.height)
 
      for (var id in this._data) { /* redraw cached data */
        this._draw(id, false)

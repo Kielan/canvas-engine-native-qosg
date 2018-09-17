@@ -121,7 +121,7 @@ export class Game extends Component {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80
     }
-    console.log('game rendergame = () => RTK.Map', RTK.Map)
+  //  console.log('game rendergame = () => RTK.Map', RTK.Map)
     var generatedMap = new RTK.Map.Arena(3, 3)
     return (
       <AnimatedGestureRecognizer
