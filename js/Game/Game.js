@@ -74,7 +74,11 @@ export class Game extends Component {
 //    ctx.fillStyle = 'green'
 //    ctx.fillRect(0, 0, 100, 100)
   //  ctx.fill()
-    this.display = new RTK.Display({width: 80, height: 24}, this.refs.canvas_holder_ref)
+    this.display = new RTK.Display({width: 300, height: 700}, this.refs.canvas_holder_ref)
+    this.map = new RTK.Map.Arena({width: 300, height: 700})
+  //  this._map = new RTK.Map(map)
+//    this.display.drawText(1,2, "Press [Enter] to start!")
+    console.log('finish compute with dataset', this.display.getContainer())
   }
   moveWithDirection = direction => {
     if (this.gameState != State.Game.playing) {
@@ -177,8 +181,8 @@ export class Game extends Component {
 const styles = StyleSheet.create({
   gcanvas: {
     top: 20,
-    width: 414,
-    height :700,
+    width: 314,
+    height: 50,
 //    backgroundColor: 'red'
 //    backgroundColor: '#FF000030'
   },
