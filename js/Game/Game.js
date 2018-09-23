@@ -5,7 +5,7 @@ import { TweenMax } from 'gsap'
 import {enable, Image as GImage, ReactNativeBridge} from 'gcanvas.js/src/index.js'
 import GestureRecognizer, {swipeDirections} from '../components/GestureView'
 //import { RTK } from '../RTK/rtk'
-import { qosgcontrol as RTK } from '../RTK/qosgcontrol'
+import { RTKControl as RTK, QOSGControl } from '../RTK/qosgcontrol'
 console.log('Game.js import, ', RTK)
 
 const AnimatedGestureRecognizer = Animated.createAnimatedComponent(GestureRecognizer)
@@ -68,20 +68,19 @@ export class Game extends Component {
 //    this._display = new RTK.Display({width: 80, height: 24}, this.refs.canvas_holder_ref)
   }
   onPressHandle = () => {
-    var ref = this.refs.canvas_holder_ref
-//    var canvas_tag = findNodeHandle(ref)
-//    var el = { ref:""+canvas_tag, style:{width:414, height:376}}
-//    ref = enable(el, {bridge: ReactNativeBridge})
-  //  var ctx = ref.getContext('2d')
-    //rect
-//    ctx.fillStyle = 'green'
-//    ctx.fillRect(0, 0, 100, 100)
-  //  ctx.fill()
-    this.display = new RTK.Display({options: {width: 300, height: 700}}, this.refs.canvas_holder_ref)
-    this.map = new RTK.Map.Arena({width: 300, height: 700})
+  //  var ref = this.refs.canvas_holder_ref
+
+    var depth = 6;
+    var width = 100;
+    var height = 48;
+
+    this.tiles = new QOSGControl.Builder(width, height, depth, this.refs.canvas_holder_ref).getTiles();
+    var map = new QOSGControl.Map.Cave(this.tiles, '');
+
+    map.getEngine().start();
   //  this._map = new RTK.Map(map)
 //    this.display.drawText(1,2, "Press [Enter] to start!")
-    console.log('finish compute with dataset', this.display.getContainer())
+    console.log('finish compute with dataset', map)
   }
   moveWithDirection = direction => {
     if (this.gameState != State.Game.playing) {
@@ -115,8 +114,8 @@ export class Game extends Component {
     }
 
     return (
-      <TouchableHighlight style={{width: 300, height: 400, flex: 1}} onPress={this.onPressHandle}>
-        <GCanvasView ref='canvas_holder_ref' style={{width: 300, height: 400}}>
+      <TouchableHighlight style={{width: 400, height: 400, flex: 1}} onPress={this.onPressHandle}>
+        <GCanvasView ref='canvas_holder_ref' style={{width: 400, height: 400}}>
         </GCanvasView>
       </TouchableHighlight>
     )
