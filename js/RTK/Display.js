@@ -164,10 +164,10 @@ console.log('drawText tokens', tokens.length)
  }
 
  return lines
- }
- RTK.Display.prototype._tick() {
+};
+RTK.Display.prototype._tick = function() {
    requestAnimationFrame(this._tick)
-   if (!this._dirty) {console.log('_tick !this._dirty '); return }
+   if (!this._dirty) {console.log('_tick !this._dirty '); return; }
    if (this._dirty === true) { /* draw all */
      this._context.fillStyle = this._options.bg
      this._context.fillRect(0, 0, this._context.canvas.width, this._context.canvas.height)
@@ -183,7 +183,7 @@ console.log('drawText tokens', tokens.length)
    }
    this._dirty = false
  }
- RTK.Display.prototype._drawNoCache(data, clearBefore) {
+ RTK.Display.prototype._drawNoCache = function(data, clearBefore) {
    var x = data[0]
    var y = data[1]
    var ch = data[2]
@@ -205,4 +205,3 @@ console.log('drawText tokens', tokens.length)
      this._context.fillText(chars[i], (x+0.5) * this._spacingX, Math.ceil((y+0.5) * this._spacingY))
    }
  }
-}

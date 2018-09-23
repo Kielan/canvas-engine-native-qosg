@@ -2,19 +2,19 @@
  * @class Rectangular backend
  * @private
  */
-ROT.Display.Rect = function(context) {
-	ROT.Display.Backend.call(this, context);
+RTK.Display.Rect = function(context) {
+	RTK.Display.Backend.call(this, context);
 
 	this._spacingX = 0;
 	this._spacingY = 0;
 	this._canvasCache = {};
 	this._options = {};
 };
-ROT.Display.Rect.extend(ROT.Display.Backend);
+RTK.Display.Rect.extend(RTK.Display.Backend);
 
-ROT.Display.Rect.cache = false;
+RTK.Display.Rect.cache = false;
 
-ROT.Display.Rect.prototype.compute = function(options) {
+RTK.Display.Rect.prototype.compute = function(options) {
 	this._canvasCache = {};
 	this._options = options;
 
@@ -38,7 +38,7 @@ ROT.Display.Rect.prototype.draw = function(data, clearBefore) {
 	}
 };
 
-ROT.Display.Rect.prototype._drawWithCache = function(data, clearBefore) {
+RTK.Display.Rect.prototype._drawWithCache = function(data, clearBefore) {
 	var x = data[0];
 	var y = data[1];
 	var ch = data[2];
@@ -74,7 +74,7 @@ ROT.Display.Rect.prototype._drawWithCache = function(data, clearBefore) {
 	this._context.drawImage(canvas, x*this._spacingX, y*this._spacingY);
 };
 
-ROT.Display.Rect.prototype._drawNoCache = function(data, clearBefore) {
+RTK.Display.Rect.prototype._drawNoCache = function(data, clearBefore) {
 	var x = data[0];
 	var y = data[1];
 	var ch = data[2];
@@ -97,13 +97,13 @@ ROT.Display.Rect.prototype._drawNoCache = function(data, clearBefore) {
 	}
 };
 
-ROT.Display.Rect.prototype.computeSize = function(availWidth, availHeight) {
+RTK.Display.Rect.prototype.computeSize = function(availWidth, availHeight) {
 	var width = Math.floor(availWidth / this._spacingX);
 	var height = Math.floor(availHeight / this._spacingY);
 	return [width, height];
 };
 
-ROT.Display.Rect.prototype.computeFontSize = function(availWidth, availHeight) {
+RTK.Display.Rect.prototype.computeFontSize = function(availWidth, availHeight) {
 	var boxWidth = Math.floor(availWidth / this._options.width);
 	var boxHeight = Math.floor(availHeight / this._options.height);
 
@@ -121,6 +121,6 @@ ROT.Display.Rect.prototype.computeFontSize = function(availWidth, availHeight) {
 	return Math.floor(boxHeight / this._options.spacing);
 };
 
-ROT.Display.Rect.prototype.eventToPosition = function(x, y) {
+RTK.Display.Rect.prototype.eventToPosition = function(x, y) {
 	return [Math.floor(x/this._spacingX), Math.floor(y/this._spacingY)];
 };
