@@ -68,19 +68,41 @@ export class Game extends Component {
 //    this._display = new RTK.Display({width: 80, height: 24}, this.refs.canvas_holder_ref)
   }
   onPressHandle = () => {
-  //  var ref = this.refs.canvas_holder_ref
-
     var depth = 6;
     var width = 100;
     var height = 48;
 
-    this.tiles = new QOSGControl.Builder(width, height, depth, this.refs.canvas_holder_ref).getTiles();
-    var map = new QOSGControl.Map.Cave(this.tiles, '');
+    this.QOSG = QOSGControl.init(this.refs.canvas_holder_ref);
+    //rather than past onto canvas force a react rerender?
+    this.QOSG.switchScreen(this.QOSG.Screen.playScreen);
+    this.tiles = new QOSGControl.Builder(width, height, depth).getTiles();
 
-    map.getEngine().start();
+    //this.QOSG.getDisplay().getContainer
+    //var map = new QOSGControl.Map.Cave(this.tiles, '');
+    //console.log('var.map', map)
+
+    //map.getEngine().start();
+    /**    v1    **/
+    /**
+    var yeahRight = this.QOSG.getDisplay()
+    var textMapRenderInstance = this.QOSG.renderCanvasFactory(this.tiles[0])
+    var yeahRightTwo = yeahRight.getContainer()
+    **/
+
+    /**    v2    **/
+    var yeahRight = this.QOSG.getDisplay()
+    this.QOSG.renderCanvasFactory(this.tiles[0])
+    var yeahRightTwo = yeahRight.getContainer()
+    console.log('finish compute with dataset', this.tiles)
+/*
+    console.log('finish compute with dataset', textMapRenderInstance)
+
+    textMapRenderInstance.map((textInstance, i) => {
+      yeahRightTwo.fillText(textInstance, i*10, 10)
+    })*/
+//    this.forceUpdate()
   //  this._map = new RTK.Map(map)
 //    this.display.drawText(1,2, "Press [Enter] to start!")
-    console.log('finish compute with dataset', map)
   }
   moveWithDirection = direction => {
     if (this.gameState != State.Game.playing) {
