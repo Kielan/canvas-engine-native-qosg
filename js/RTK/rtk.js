@@ -2,7 +2,7 @@
 import {Color} from './Color'
 import {Display} from './Display'
 import {RTK_ASCII} from './ASCII'
-import {Map} from './Map'
+import {Map, Arena} from './Map'
 import {Rect} from './Rect'
 /**
  * @namespace Top-level RTK namespace
@@ -44,5 +44,6 @@ export const RTK = {
    Map,
    RTK_ASCII,
    Rect,
+   Arena,
 }
  //display is the screenview coordinates of the, "camera" on the map

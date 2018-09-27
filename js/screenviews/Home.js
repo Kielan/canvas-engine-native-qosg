@@ -1,7 +1,7 @@
 'use strict'
 import React, { Component } from 'react'
 import { TouchableHighlight, TouchableOpacity, TextInput, Text, View } from 'react-native'
-import { levelScreen } from '../screens'
+import { levelScreen } from '../navigations'
 
 class HomeScreen extends Component {
   constructor(props) {

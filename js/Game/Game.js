@@ -4,7 +4,10 @@ import {GCanvasView} from 'react-native-gcanvas'
 import { TweenMax } from 'gsap'
 import {enable, Image as GImage, ReactNativeBridge} from 'gcanvas.js/src/index.js'
 import GestureRecognizer, {swipeDirections} from '../components/GestureView'
-import { RTK } from '../RTK/rtk'
+//import { RTK } from '../RTK/rtk'
+import { RTKControl as RTK, QOSGControl } from '../RTK/qosgcontrol'
+console.log('Game.js import, ', RTK)
+
 const AnimatedGestureRecognizer = Animated.createAnimatedComponent(GestureRecognizer)
 import State from '../state'
 var displayLevelOptions = {
@@ -65,16 +68,41 @@ export class Game extends Component {
 //    this._display = new RTK.Display({width: 80, height: 24}, this.refs.canvas_holder_ref)
   }
   onPressHandle = () => {
-    var ref = this.refs.canvas_holder_ref
-//    var canvas_tag = findNodeHandle(ref)
-//    var el = { ref:""+canvas_tag, style:{width:414, height:376}}
-//    ref = enable(el, {bridge: ReactNativeBridge})
-  //  var ctx = ref.getContext('2d')
-    //rect
-//    ctx.fillStyle = 'green'
-//    ctx.fillRect(0, 0, 100, 100)
-  //  ctx.fill()
-    this.display = new RTK.Display({width: 80, height: 24}, this.refs.canvas_holder_ref)
+    var depth = 6;
+    var width = 100;
+    var height = 48;
+
+    this.QOSG = QOSGControl.init(this.refs.canvas_holder_ref);
+    //rather than past onto canvas force a react rerender?
+    this.QOSG.switchScreen(this.QOSG.Screen.playScreen);
+    this.tiles = new QOSGControl.Builder(width, height, depth).getTiles();
+
+    //this.QOSG.getDisplay().getContainer
+    //var map = new QOSGControl.Map.Cave(this.tiles, '');
+    //console.log('var.map', map)
+
+    //map.getEngine().start();
+    /**    v1    **/
+    /**
+    var yeahRight = this.QOSG.getDisplay()
+    var textMapRenderInstance = this.QOSG.renderCanvasFactory(this.tiles[0])
+    var yeahRightTwo = yeahRight.getContainer()
+    **/
+
+    /**    v2    **/
+    var yeahRight = this.QOSG.getDisplay()
+    this.QOSG.renderCanvasFactory(this.tiles[0])
+    var yeahRightTwo = yeahRight.getContainer()
+    console.log('finish compute with dataset', this.tiles)
+/*
+    console.log('finish compute with dataset', textMapRenderInstance)
+
+    textMapRenderInstance.map((textInstance, i) => {
+      yeahRightTwo.fillText(textInstance, i*10, 10)
+    })*/
+//    this.forceUpdate()
+  //  this._map = new RTK.Map(map)
+//    this.display.drawText(1,2, "Press [Enter] to start!")
   }
   moveWithDirection = direction => {
     if (this.gameState != State.Game.playing) {
@@ -108,8 +136,8 @@ export class Game extends Component {
     }
 
     return (
-      <TouchableHighlight onPress={this.onPressHandle}>
-        <GCanvasView ref='canvas_holder_ref' style={styles.gcanvas}>
+      <TouchableHighlight style={{width: 400, height: 400, flex: 1}} onPress={this.onPressHandle}>
+        <GCanvasView ref='canvas_holder_ref' style={{width: 400, height: 400}}>
         </GCanvasView>
       </TouchableHighlight>
     )
@@ -168,7 +196,7 @@ export class Game extends Component {
 //    }
     //backgroundColor: '#6dceea'
     return (
-      <View style={[{ flex: 1 }, this.props.style]}>
+      <View style={[{ flex: 1 }]}>
         {this.renderGame()}
       </View>
     )
@@ -176,9 +204,9 @@ export class Game extends Component {
 }
 const styles = StyleSheet.create({
   gcanvas: {
-    top: 20,
-    width: 414,
-    height :700,
+    top: 10,
+    width: 314,
+    height: 250,
 //    backgroundColor: 'red'
 //    backgroundColor: '#FF000030'
   },

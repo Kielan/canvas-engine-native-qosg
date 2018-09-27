@@ -36,15 +36,3 @@ export const startApp = () => {
     },
   })
 }
-
-export const levelScreen = () => Navigation.setRoot({
-	root: {
-		stack: {
-			children: [
-				{ component: {
-					name: types.LEVEL_SCREEN,
-				} }
-			]
-		}
-	}
-})
