@@ -37,6 +37,11 @@
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		84A752D5215C8D3B00400819 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A752AC215C8D3B00400819 /* GLKit.framework */; };
+		84A752D7215C8D5000400819 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A752D6215C8D5000400819 /* Foundation.framework */; };
+		84A752D9215C8D6700400819 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A752D8215C8D6700400819 /* UIKit.framework */; };
+		84A752DB215C8D7700400819 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A752DA215C8D7700400819 /* OpenGLES.framework */; };
+		84A752DD215C8D9400400819 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A752DC215C8D9400400819 /* CoreText.framework */; };
 		84CF3404213A0D700030DA94 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84CF3401213A0BB60030DA94 /* libReactNativeNavigation.a */; };
 		84CF340B213B3BB40030DA94 /* libRCTGCanvas.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84CF340A213B3B7B0030DA94 /* libRCTGCanvas.a */; };
 		84CF340D213C64C60030DA94 /* GCanvas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84CF340C213C64C60030DA94 /* GCanvas.framework */; };
@@ -373,6 +378,11 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		84A752AC215C8D3B00400819 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		84A752D6215C8D5000400819 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		84A752D8215C8D6700400819 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		84A752DA215C8D7700400819 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		84A752DC215C8D9400400819 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		84CF33D6213A0BB60030DA94 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		84CF3405213B3B7B0030DA94 /* RCTGCanvas.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGCanvas.xcodeproj; path = "../node_modules/react-native-gcanvas/ios/RCTGCanvas.xcodeproj"; sourceTree = "<group>"; };
 		84CF340C213C64C60030DA94 /* GCanvas.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GCanvas.framework; path = "../node_modules/react-native-gcanvas/ios/GCanvas.framework"; sourceTree = "<group>"; };
@@ -393,6 +403,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A752DD215C8D9400400819 /* CoreText.framework in Frameworks */,
+				84A752DB215C8D7700400819 /* OpenGLES.framework in Frameworks */,
+				84A752D9215C8D6700400819 /* UIKit.framework in Frameworks */,
+				84A752D7215C8D5000400819 /* Foundation.framework in Frameworks */,
+				84A752D5215C8D3B00400819 /* GLKit.framework in Frameworks */,
 				84CF340D213C64C60030DA94 /* GCanvas.framework in Frameworks */,
 				84CF340B213B3BB40030DA94 /* libRCTGCanvas.a in Frameworks */,
 				84CF3404213A0D700030DA94 /* libReactNativeNavigation.a in Frameworks */,
@@ -557,6 +572,11 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84A752DC215C8D9400400819 /* CoreText.framework */,
+				84A752DA215C8D7700400819 /* OpenGLES.framework */,
+				84A752D8215C8D6700400819 /* UIKit.framework */,
+				84A752D6215C8D5000400819 /* Foundation.framework */,
+				84A752AC215C8D3B00400819 /* GLKit.framework */,
 				84CF340C213C64C60030DA94 /* GCanvas.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 			);
