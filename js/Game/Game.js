@@ -75,7 +75,7 @@ export class Game extends Component {
     this.QOSG = QOSGControl.init(this.refs.canvas_holder_ref);
     //rather than past onto canvas force a react rerender?
     this.QOSG.switchScreen(this.QOSG.Screen.playScreen);
-    this.tiles = new QOSGControl.Builder(width, height, depth).getTiles();
+    //this.tiles = new QOSGControl.Builder(width, height, depth).getTiles();
 
     //this.QOSG.getDisplay().getContainer
     //var map = new QOSGControl.Map.Cave(this.tiles, '');
@@ -90,9 +90,9 @@ export class Game extends Component {
     **/
 
     /**    v2    **/
-    var yeahRight = this.QOSG.getDisplay()
-    this.QOSG.renderCanvasFactory(this.tiles[0])
-    var yeahRightTwo = yeahRight.getContainer()
+    //var yeahRight = this.QOSG.getDisplay()
+    //this.QOSG.renderCanvasFactory(this.tiles[0])
+    //var yeahRightTwo = yeahRight.getContainer()
     console.log('finish compute with dataset', this.tiles)
 /*
     console.log('finish compute with dataset', textMapRenderInstance)
